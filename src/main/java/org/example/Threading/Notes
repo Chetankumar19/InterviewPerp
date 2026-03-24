@@ -1,0 +1,132 @@
+Thread : A thread represents a separate path of execution of a group of statements.
+
+Which thread always runs in a java program by default => main thread
+
+A thread represents execution of statements.
+two types => 1. Single tasking 2. Multi tasking
+
+1.Single Tasking :
+    only one task given to the processer at a time.
+    a lot of processor time and microprocess has to sit idle
+
+2.Multi Tasking : fast switching between tasks.The system switches between tasks very fast, so it appears like they are running at the same time.
+    Round Robin is used to share CPU time fairly among processes.
+    Each process gets a fixed time slice called a time quantum / time slice.
+    The CPU executes one process for that time.
+    If the process is not finished, it goes to the back of the queue.
+    The next process gets its turn.
+    This continues in a circular order.
+    Example:
+    Processes: P1, P2, P3
+    Time quantum = 2 units
+
+    Execution order:
+    P1 → P2 → P3 → P1 → P2 → … until all are completed
+
+ * if we really want to achieve the multi tasking, we need computers with multiple processors.
+
+
+Two types of multi Tasking :
+    Process-based multitasking runs multiple independent programs with separate memory,
+    while thread-based multitasking runs multiple threads within the same process sharing memory, making it faster but less safe.
+1.Process based
+    Multiple processes (independent programs) run concurrently.
+    Each process has its own memory space
+    Processes are isolated from each other
+    Communication is slower (uses IPC like pipes, sockets)
+    Pros:
+        More secure & stable (one crash doesn’t affect others)
+    Cons:
+        Heavyweight (more memory & CPU overhead)
+        Slower context switching
+2.Thread based
+    Multiple threads within the same process run concurrently.
+    Threads share the same memory
+    Faster communication (no need for IPC)
+    Lightweight and efficient
+    Example:
+        A web server handling multiple requests
+        One app doing background tasks + UI simultaneously
+    Pros:
+        Fast & efficient
+        Better CPU utilization
+    Cons:
+        Less safe (one thread crash can affect entire process)
+        Issues like race conditions, deadlocks
+
+Question : Why thread are called light weight => because they utilize minimum resources of the system.
+                                                 take less memory and less processor time
+
+For Methods of thread see ThreadDemo class with explanation
+T.start() => starts running the code inside the run() method
+
+Terminating the thread : A thread terminate automatically when it comes out of run().or we need to write our on logic
+    example in ThreadDemo.
+
+
+MultiTasking using Threads:
+    we can take multiple threads and attach them to the tasks and those tasks are simultaneously executed by the multiple threads
+    and this is called multithreading.
+    Example: MultiThreadingDemo file
+
+
+Thread Synchronization or Thread safe: Preventing the threads to act on the same object simultaneously. this is called synchronization.
+
+    t1
+ ---------------------------|---------> ----|
+                             |              |
+                             |              |mutex
+  t2 want till t1 come out   |              |
+ ------------>               |______________|
+
+Two type of Synchronize the object
+    1.using synchronized block:
+    2.Using synchronized Keyword
+    Synchronized block locks only a specific section of code and is more efficient,
+    while synchronized method locks the entire method and is simpler but less flexible.
+
+    Use synchronized block 👉 in real projects (better performance)
+    Use synchronized method 👉 for simple cases
+
+
+
+Deadlock in Threads:
+    A deadlock is a situation where two or more threads are stuck forever, each waiting for a resource that another thread holds.
+
+
+
+Thread Life Cycle Diagram:
+        +--------+
+        |  NEW   |
+        +--------+
+             |
+             | start()
+             v
+       +------------+
+       | RUNNABLE   |  <----+
+       +------------+       |
+             |              |
+             | (CPU picks)  |
+             v              |
+       +------------+       |
+       |  RUNNING   |       |
+       +------------+       |
+        /    |     \        |
+       /     |      \       |
+      v      v       v      |
++---------+ +---------+ +-------------+
+| BLOCKED | | WAITING | | TIMED WAIT |
++---------+ +---------+ +-------------+
+     |           |            |
+     +-----------+------------+
+                 |
+                 v
+           +------------+
+           | RUNNABLE   |
+           +------------+
+                 |
+                 v
+           +------------+
+           | TERMINATED |
+           +------------+
+
